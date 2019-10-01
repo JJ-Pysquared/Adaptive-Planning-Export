@@ -3,13 +3,19 @@ import xmltodict
 import pandas as pd
 import numpy as np
 
-#Adaptive API Methods: https://knowledge.adaptiveplanning.com/Integration/Managing_Data_Integration/API_Documentation/Understanding_the_Adaptive_Insights_API/API_Methods
-# xml is what you will replace with your desired method from the above Adaptive Method API
+"""
+Adaptive API Methods: https://knowledge.adaptiveplanning.com/Integration/Managing_Data_Integration/API_Documentation/Understanding_the_Adaptive_Insights_API/API_Methods
+
+if you do not know your version name you should look in Adaptive in the top right hand side the drop down menu are your Version names  
+if you do not know your InstanceCode you will need to run Instance exportInstances from the above Adaptive link
+
+xml is what you will replace with your desired method from the above Adaptive Method API
+"""
 
 xml = """<?xml version='1.0' encoding='UTF-8'?>
 <call method="exportData" callerName="a string that identifies your client application">
 <credentials login="Useremail@tenant.org" password="Password123" instanceCode="Instancename"/>
-<version name="FY20 Budget" isDefault="false"/>
+<version name="Versionname" isDefault="false"/>
 <format useInternalCodes="true" includeUnmappedItems="true"/>
 <filters>
    <timeSpan start="00/0000" end="99/9999"/>
@@ -23,7 +29,7 @@ headers = {"headers":'headers'} # set what your server accepts
 req= (requests.get('https://api.adaptiveinsights.com/api/v20', data=xml, headers=headers).text)
 
 #Everything above is basically required the below is used to loop through your response and saving it to a csv
-
+#------------------------------------------------------------------------------------------------------------------------
 doc = xmltodict.parse(req)
 splt=doc['response']['output'].split("\n")
 
